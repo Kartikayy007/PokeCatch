@@ -27,7 +27,7 @@ window.addEventListener('load', function() {
             this.Gameheight = Gameheight;
             this.width = 210;
             this.height = 200;
-            this.x = 100;
+            this.x = 100;  
             this.y = this.Gameheight - this.height - 110;
             this.player = document.getElementById('ash');
             
@@ -40,6 +40,7 @@ window.addEventListener('load', function() {
             this.vy = 0;
             this.gravity = 1;
             this.speed = 0;
+            this.isMovingRight = false;
         }
 
         draw(context) {
@@ -57,25 +58,36 @@ window.addEventListener('load', function() {
             );
         }
 
-        update(input, deltaTime) {
+        update(input, deltaTime, background) {
+            this.isMovingRight = false;
+
             if (input.keys.indexOf('d') > -1) {
-                this.speed = 10;
-                this.frameY = 0; 
+                this.isMovingRight = true;
+                this.frameY = 0;
+                
+                if (this.x >= 100) {
+                    background.speed = -5;
+                    this.speed = 0;
+                } else {
+                    background.speed = 0;
+                    this.speed = 10;
+                }
             } else if (input.keys.indexOf('a') > -1) {
                 this.speed = -5;
-            } else if (input.keys.indexOf('w') > -1 && this.onGround()) {
-                this.vy -= 20;
+                background.speed = 0;
             } else {
                 this.speed = 0;
+                background.speed = 0;
+            }
+
+            if (input.keys.indexOf('w') > -1 && this.onGround()) {
+                this.vy -= 20;
             }
 
             this.x += this.speed;
             this.y += this.vy;
 
             if (this.x < 0) this.x = 0;
-            else if (this.x > this.Gamewidth - this.width) {
-                this.x = this.Gamewidth - this.width;
-            }
 
             if (!this.onGround()) {
                 this.vy += this.gravity;
@@ -88,10 +100,10 @@ window.addEventListener('load', function() {
 
             if (this.timer > this.interval) {
                 this.timer = 0;
-                if (this.speed !== 0) {
+                if (this.isMovingRight || this.speed !== 0) {
                     this.index = (this.index + 1) % this.frames.length;
                 } else {
-                    this.index = 0; 
+                    this.index = 0;
                 }
             } else {
                 this.timer += deltaTime;
@@ -130,8 +142,9 @@ window.addEventListener('load', function() {
             this.x = 0;
             this.y = 0;
             this.image = document.getElementById('map');
-            this.speed = 1;
+            this.speed = 0;
         }
+        
         draw(context) {
             context.drawImage(
                 this.image, 
@@ -140,9 +153,22 @@ window.addEventListener('load', function() {
                 this.width, 
                 this.height
             );
+            
+            context.drawImage(
+                this.image,
+                this.x + this.width,
+                this.y,
+                this.width,
+                this.height
+            );
         }
+        
         update() {
-            this.x -= this.speed;
+            this.x += this.speed;
+
+            if (this.x <= -this.width) {
+                this.x = 0;
+            }
         }
     }
 
@@ -166,7 +192,7 @@ window.addEventListener('load', function() {
         background.draw(ctx);
         background.update();
         player.draw(ctx);
-        player.update(input, deltaTime);
+        player.update(input, deltaTime, background);
 
         pokeBalls.forEach((pokeBall, index) => {
             pokeBall.update();

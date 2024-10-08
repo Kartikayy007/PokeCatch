@@ -3,13 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-body {
-    background: #6AC1FF; 
-    /* overflow: hidden; */
-}
-
 canvas {
     position: absolute;
+    /* background: linear-gradient(to bottom, #87CEEB, #4682B4); */
     height: 100%;
     width: 100%;
     background: #6AC1FF; 
