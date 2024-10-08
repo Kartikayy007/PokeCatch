@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
     const introscreen = document.getElementById('intro');
-    const button = document.getElementById('play-button');
+    const button = document.getElementById('play');
     // const canvas = document.getElementById('GameCanvas');
     // const ctx = canvas.getContext('2d');
     
