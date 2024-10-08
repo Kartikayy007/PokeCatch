@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokéCatch</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 </head>
 <body>
+    <div id="intro">
+        <h1>PokéCatch</h1>
+        <button id="play">Start Game</button>
+    </div>
+
+    <div id="container">
+        <canvas id="GameCanvas"></canvas>
+    </div>
+    
+    <!-- Game Assets -->
     <img src="assets/ash running.png" id="ash" alt="">
-    <img src="assets/map.png" id="map">
+    <img src="assets/map.png" id="map" alt="">
     <img src="assets/IMG_dETTvSQyE6UT-removebg-preview.png" id="pokeball" alt="">
-    <img src="assets/pikachu___sprite_sheet_extras_by_xxalexsmashxx_dfhvc9m.png" alt="" id="pika">
-    <img src="assets/zoroark___sprite_sheet___credits_desc_by_xxalexsmashxx_dgsr3i4.png" id="zoroark" alt="">
-    <img src="assets/new_machamp_sprite_sheet_by_xxalexsmashxx_dfsvfp3.png" alt="" id="machamp">
-    <img src="assets/vaporunny___sprite_sheet___credits_desc_by_xxalexsmashxx_dg0v10i.png" alt=""
-    id="vaporunny">
-    <canvas id="GameCanvas"></canvas>
+    <img src="assets/images-removebg-preview.png" id="pika" alt="">
+    <img src="assets/Poke.png" id="enemy-poke" alt="">
+    
     <script src="script.js"></script>
 </body>
 </html>

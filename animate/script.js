@@ -1,8 +1,24 @@
 window.addEventListener('load', function() {
+    const introscreen = document.getElementById('intro');
+    const button = document.getElementById('play-button');
+    // const canvas = document.getElementById('GameCanvas');
+    // const ctx = canvas.getContext('2d');
+    
+
+    button.addEventListener('click', function() {
+        startGame();
+        introscreen.style.display = 'none';
+    });
+
+    function startGame() {
     const canvas = document.getElementById('GameCanvas');
     const ctx = canvas.getContext('2d');
     const width = canvas.width = window.innerWidth;
     const height = canvas.height = window.innerHeight;
+
+    let gameover = false;
+    let score = 0;
+    
 
     class Input {
         constructor() {
@@ -30,7 +46,6 @@ window.addEventListener('load', function() {
             this.x = 100;  
             this.y = this.Gameheight - this.height - 110;
             this.player = document.getElementById('ash');
-            
             this.frames = [0, 1.2, 2.6, 3.6, 4.6, 5.8, 7.1, 8.1];
             this.index = 0;
             this.frameY = 0;
@@ -40,11 +55,11 @@ window.addEventListener('load', function() {
             this.vy = 0;
             this.gravity = 1;
             this.speed = 0;
-            this.isMovingRight = false;
+            this.onright = false;
         }
 
         draw(context) {
-            const frameX = Math.floor(this.frames[this.index] * this.width);
+            const frameX = this.frames[this.index] * this.width;
             context.drawImage(
                 this.player, 
                 frameX, 
@@ -58,32 +73,36 @@ window.addEventListener('load', function() {
             );
         }
 
-        update(input, deltaTime, background) {
-            this.isMovingRight = false;
+        update(input, time, background) {
+            this.onright = false;
 
             if (input.keys.indexOf('d') > -1) {
-                this.isMovingRight = true;
+                this.onright = true;
                 this.frameY = 0;
                 
+                
                 if (this.x >= 100) {
-                    background.speed = -5;
+                    background.speed = -12;
                     this.speed = 0;
-                } else {
+                } 
+                else {
                     background.speed = 0;
                     this.speed = 10;
                 }
-            } else if (input.keys.indexOf('a') > -1) {
+            } 
+            else if (input.keys.indexOf('a') > -1) {
                 this.speed = -5;
                 background.speed = 0;
-            } else {
+            } 
+            else {
                 this.speed = 0;
                 background.speed = 0;
             }
-
+            
             if (input.keys.indexOf('w') > -1 && this.onGround()) {
-                this.vy -= 20;
+                this.vy -= 25;
             }
-
+            
             this.x += this.speed;
             this.y += this.vy;
 
@@ -100,13 +119,15 @@ window.addEventListener('load', function() {
 
             if (this.timer > this.interval) {
                 this.timer = 0;
-                if (this.isMovingRight || this.speed !== 0) {
+                if (this.onright || this.speed !== 0) {
                     this.index = (this.index + 1) % this.frames.length;
-                } else {
+                }
+                else {
                     this.index = 0;
                 }
-            } else {
-                this.timer += deltaTime;
+            } 
+            else {
+                this.timer += time;
             }
         }
 
@@ -121,15 +142,15 @@ window.addEventListener('load', function() {
             this.y = y;
             this.radius = 20;
             this.speed = 10;
-            this.ballImage = document.getElementById('pokeball'); 
+            this.ball = document.getElementById('pokeball');
         }
 
         draw(context) {
-            context.drawImage(this.ballImage, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
+            context.drawImage(this.ball, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
         }
 
-        update() {
-            this.x += this.speed;
+        update(background) {
+            this.x += this.speed - background.speed;
         }
     }
 
@@ -146,35 +167,62 @@ window.addEventListener('load', function() {
         }
         
         draw(context) {
-            context.drawImage(
-                this.image, 
-                this.x, 
-                this.y, 
-                this.width, 
-                this.height
-            );
-            
-            context.drawImage(
-                this.image,
-                this.x + this.width,
-                this.y,
-                this.width,
-                this.height
-            );
+            context.drawImage(this.image, this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
         }
         
         update() {
             this.x += this.speed;
-
             if (this.x <= -this.width) {
                 this.x = 0;
             }
         }
     }
 
+    class Pokemon {
+        constructor(Gamewidth, Gameheight, Enemy = false) {
+            this.Gamewidth = Gamewidth;
+            this.Gameheight = Gameheight;
+            this.width = 170;
+            this.height = 150;
+            this.x = this.Gamewidth + 100; 
+            this.y = this.Gameheight - this.height - 132;
+            this.image = document.getElementById(Enemy ? 'enemy-poke' : 'pika');
+            this.Enemy = Enemy;
+            this.remove = false;
+        }
+    
+        draw(context) {
+            context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
+    
+        update(background) {
+            this.x += background.speed;
+            
+            if (this.x < -this.width) {
+                this.remove = true;
+            }
+        }
+    }
+
+    function Pcollision(player, pokemon) {
+        return player.x < pokemon.x + pokemon.width &&
+               player.x + player.width > pokemon.x &&
+               player.y < pokemon.y + pokemon.height &&
+               player.y + player.height > pokemon.y;
+    }
+
+    function BCollision(pokeBall, pokemon) {
+        return pokeBall.x < pokemon.x + pokemon.width &&
+               pokeBall.x + pokeBall.radius * 2 > pokemon.x &&
+               pokeBall.y < pokemon.y + pokemon.height &&
+               pokeBall.y + pokeBall.radius * 2 > pokemon.y;
+    }
+
     const input = new Input();
     const player = new Player(canvas.width, canvas.height);
     const background = new Background(canvas.width, canvas.height);
+    let pokemons = [];
     const pokeBalls = [];
 
     window.addEventListener('click', (e) => {
@@ -182,27 +230,94 @@ window.addEventListener('load', function() {
         pokeBalls.push(pokeBall);
     });
 
-    let lastime = 0;
+    let lastTime = 0;
+    let spawn = 0;
+    let interval = 2000;
 
-    function animation(timeStamp) {
-        const deltaTime = timeStamp - lastime;
-        lastime = timeStamp;
+    function spawnpokemon() {
+        let Enemy = Math.random() < 0.6;
+        const pokemon = new Pokemon(canvas.width, canvas.height, Enemy);
+        pokemons.push(pokemon);
+    }
+    
+
+    function totalScore(context) {
+        context.fillStyle = 'white';
+        context.font = '27px poppins';
+        context.fillText(`Pokémons caught: ${score}`, 10, 30);
+    }
+
+    function gameOver(context) {
+        context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'white';
+        context.font = '59px poppins';
+        context.textAlign = 'center';
+        context.fillText(`Game Over! Pokémons caught: ${score}`, canvas.width/2, canvas.height/2);
+    }
+
+    function animation(timestamp) {
+        const time = timestamp - lastTime;
+        lastTime = timestamp;
         
         ctx.clearRect(0, 0, width, height);
+        
         background.draw(ctx);
         background.update();
+        
         player.draw(ctx);
-        player.update(input, deltaTime, background);
+        player.update(input, time, background);
 
-        pokeBalls.forEach((pokeBall, index) => {
-            pokeBall.update();
-            pokeBall.draw(ctx);
-            if (pokeBall.x > canvas.width) {
-                pokeBalls.splice(index, 1);
+        spawn = spawn + time;
+        if (spawn > interval) {
+            spawnpokemon();
+            spawn = 0;
+            interval = Math.random() * (2000-1000) + 1000; 
+        }
+
+        pokemons.forEach((pokemon) => {
+            pokemon.draw(ctx);
+            pokemon.update(background);
+
+            if (Pcollision(player, pokemon) && pokemon.Enemy) {
+                gameover = true;
             }
         });
 
-        requestAnimationFrame(animation);
+        pokeBalls.forEach((pokeBall) => {
+            pokeBall.draw(ctx);
+            pokeBall.update(background);
+
+            pokemons.forEach((pokemon, indexpokemon) => {
+                if (BCollision(pokeBall, pokemon)) {
+                    if (pokemon.Enemy) {
+                        gameover = true;
+                    } else {
+                        score++; 
+                        pokemons.splice(indexpokemon, 1); 
+                        pokeBalls.splice(indexpokemon, 1); 
+                    }
+                }
+            });
+        });
+
+        if (gameover) {
+            gameOver(ctx);
+        } else {
+            totalScore(ctx);
+            requestAnimationFrame(animation);
+        }
+
+        pokemons = pokemons.filter(pokemon => !pokemon.remove);
     }
-    animation(0);
+
+    requestAnimationFrame(animation);
+    }
+
 });
+
+
+
+// window.addEventListener('load', function() {
+    
+// });

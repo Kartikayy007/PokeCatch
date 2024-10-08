@@ -3,14 +3,65 @@
     padding: 0;
     box-sizing: border-box;
 }
-canvas {
-    position: absolute;
-    /* background: linear-gradient(to bottom, #87CEEB, #4682B4); */
-    height: 100%;
-    width: 100%;
-    background: #6AC1FF; 
+
+body {
+    overflow: hidden;
+    font-family: poppins, sans-serif;
 }
 
-#pika, #ash,#pokeball ,#ash-jump, #map, #zoroark, #machamp, #vaporunny {
+#intro {
+    position: fixed;
+    background: url(assets/bg.jpg) no-repeat center ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+h1 {
+    color: white;
+    font-size: 48px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#play {
+    padding: 15px 40px;
+    font-size: 24px;
+    background-color: gold;
+    color: black;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#play:hover {
+    background-color: yellow;
+}
+
+#container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+canvas {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #6AC1FF;
+    cursor: default;
+}
+
+canvas:hover {
+    cursor: pointer;
+}
+
+#enemy-poke, #ash, #pokeball, #map, #pika {
     display: none;
 }
