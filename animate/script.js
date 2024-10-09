@@ -1,8 +1,10 @@
 window.addEventListener('load', function() {
     const introscreen = document.getElementById('intro');
     const button = document.getElementById('play');
+    const bgm = document.getElementById('bg');
 
     button.addEventListener('click', function() {
+        bgm.play();
         startGame();
         introscreen.style.display = 'none';
     });
@@ -98,7 +100,7 @@ window.addEventListener('load', function() {
             }
             
             if (input.keys.indexOf('w') > -1 && this.onGround()) {
-                this.vy -= 25;
+                this.vy -= 30;
             }
             
             this.x += this.speed;
@@ -228,7 +230,7 @@ window.addEventListener('load', function() {
     let interval = 2000;
 
     function spawnpokemon() {
-        let Enemy = Math.random() < 0.3;
+        let Enemy = Math.random() < 0.4;
         const pokemon = new Pokemon(canvas.width, canvas.height, Enemy);
         pokemons.push(pokemon);
     }
@@ -305,6 +307,8 @@ window.addEventListener('load', function() {
 
         if (gameover) {
             gameOver(ctx);
+            bgm.pause();
+
         } else {
             totalScore(ctx);
             requestAnimationFrame(animation);
@@ -317,5 +321,3 @@ window.addEventListener('load', function() {
     }
 
 });
-
-
