@@ -18,19 +18,20 @@ window.addEventListener('load', function() {
 
     let gameover = false;
     let score = 0;
+    let space = true;
     
 
     class Input {
         constructor() {
             this.keys = [];
             window.addEventListener('keydown', (e) => {
-                if ((e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd') 
+                if ((e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd' || e.key === ' ') 
                     && this.keys.indexOf(e.key) === -1) {
                     this.keys.push(e.key);
                 }
             });
             window.addEventListener('keyup', (e) => {
-                if (e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd') {
+                if (e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd' || e.key === ' ') {
                     this.keys.splice(this.keys.indexOf(e.key), 1);
                 }
             });
@@ -225,17 +226,17 @@ window.addEventListener('load', function() {
     let pokemons = [];
     const pokeBalls = [];
 
-    window.addEventListener('click', (e) => {
-        const pokeBall = new PokeBall(player.x + player.width, player.y + player.height / 2);
-        pokeBalls.push(pokeBall);
-    });
+    // window.addEventListener('click', (e) => {
+    //     const pokeBall = new PokeBall(player.x + player.width, player.y + player.height / 2);
+    //     pokeBalls.push(pokeBall);
+    // });
 
     let lastTime = 0;
     let spawn = 0;
     let interval = 2000;
 
     function spawnpokemon() {
-        let Enemy = Math.random() < 0.6;
+        let Enemy = Math.random() < 0.3;
         const pokemon = new Pokemon(canvas.width, canvas.height, Enemy);
         pokemons.push(pokemon);
     }
@@ -267,6 +268,15 @@ window.addEventListener('load', function() {
         
         player.draw(ctx);
         player.update(input, time, background);
+
+        if (input.keys.indexOf(' ') > -1 && space) {
+            const pokeBall = new PokeBall(player.x + player.width, player.y + player.height / 2);
+            pokeBalls.push(pokeBall);
+            space = false;
+            setTimeout(() => {
+                space = true;
+            }, 500);
+        }
 
         spawn = spawn + time;
         if (spawn > interval) {
