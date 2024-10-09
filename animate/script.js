@@ -2,6 +2,7 @@ window.addEventListener('load', function() {
     const introscreen = document.getElementById('intro');
     const button = document.getElementById('play');
     const bgm = document.getElementById('bg');
+    const lost = document.getElementById('lose');
 
     button.addEventListener('click', function() {
         bgm.play();
@@ -249,6 +250,30 @@ window.addEventListener('load', function() {
         context.font = '59px poppins';
         context.textAlign = 'center';
         context.fillText(`Game Over! Pokémons caught: ${score}`, canvas.width/2, canvas.height/2);
+
+        const reset = document.createElement('button');
+        reset.textContent = 'Reset';
+        reset.style.fontSize = '20px';
+        reset.style.backgroundColor = 'gold';
+        reset.style.border = 'none';
+        reset.style.borderRadius = '25px';
+        reset.style.position = 'absolute';
+        reset.style.top = '55%';
+        reset.style.left = '50%';
+        reset.style.transform = 'translate(-50%, -50%)';
+        reset.style.padding = '10px 20px';
+        reset.style.cursor = 'pointer';
+        reset.addEventListener('mouseover', () => {
+            reset.style.backgroundColor = 'yellow';
+        });
+        reset.addEventListener('mouseout', () => {
+            reset.style.backgroundColor = 'gold';
+        });
+        document.body.appendChild(reset);
+
+        reset.addEventListener('click', () => {
+            location.reload();
+        });
     }
 
     function animation(timestamp) {
@@ -308,7 +333,7 @@ window.addEventListener('load', function() {
         if (gameover) {
             gameOver(ctx);
             bgm.pause();
-
+            lost.play();
         } else {
             totalScore(ctx);
             requestAnimationFrame(animation);
