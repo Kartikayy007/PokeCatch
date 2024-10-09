@@ -8,21 +8,50 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
     />
     <link rel="icon" href="assets/pokeball.png" type="image/x-icon">
 </head>
 <body>
     <div id="intro">
-        <h1>PokéCatch</h1>
+        <div class="rules">
+            <h1 style="text-align: center;">PokéCatch</h1>
+            <h2>How to Play:</h2>
+            <div class="rule">
+                <div class="controls">
+                    <img src="assets/leftarrow.png" alt="">
+                    <img src="assets/uparrow.png" alt="">
+                    <img src="assets/rightarrow.png" alt="">
+                </div>
+                <p>Use <span class="highlight">W</span> <span class="highlight">A</span> and <span class="highlight">D</span> to move Ash</p>
+            </div>
+            <div class="rule">
+                <div class="controls">
+                    <img src="assets/spaceBar.png" alt="Spacebar">
+                </div>
+                <p>Press <span class="highlight">SPACE</span> to throw Pokéballs</p>
+            </div>
+            <div class="rule">
+                <div class="controls">
+                    <img src="assets/images-removebg-preview.png" class="pokemon">
+                </div>
+                <p>Catch <span class="highlight">Pikachu Pokémon</span> to score points!</p>
+            </div>
+            <div class="rule">
+                <div class="controls">
+                    <img src="assets/Poke.png" class="pokemon">
+                </div>
+                <p>Avoid the <span class="highlight">Psyduck Pokémon</span> or game over!</p>
+            </div>
+        </div>
         <button id="play">Start Game</button>
     </div>
-
+    
     <div id="container">
         <canvas id="GameCanvas"></canvas>
     </div>
-
+    
     <img src="assets/ash running.png" id="ash" alt="">
     <img src="assets/map.png" id="map" alt="">
     <img src="assets/IMG_dETTvSQyE6UT-removebg-preview.png" id="pokeball" alt="">

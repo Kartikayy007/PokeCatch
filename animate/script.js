@@ -1,9 +1,6 @@
 window.addEventListener('load', function() {
     const introscreen = document.getElementById('intro');
     const button = document.getElementById('play');
-    // const canvas = document.getElementById('GameCanvas');
-    // const ctx = canvas.getContext('2d');
-    
 
     button.addEventListener('click', function() {
         startGame();
@@ -226,11 +223,6 @@ window.addEventListener('load', function() {
     let pokemons = [];
     const pokeBalls = [];
 
-    // window.addEventListener('click', (e) => {
-    //     const pokeBall = new PokeBall(player.x + player.width, player.y + player.height / 2);
-    //     pokeBalls.push(pokeBall);
-    // });
-
     let lastTime = 0;
     let spawn = 0;
     let interval = 2000;
@@ -327,7 +319,3 @@ window.addEventListener('load', function() {
 });
 
 
-
-// window.addEventListener('load', function() {
-    
-// });
