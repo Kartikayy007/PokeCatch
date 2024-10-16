@@ -14,9 +14,7 @@ PokéCatch is a fun, browser-based game built using **HTML**, **CSS**, and **Van
 The goal is to catch as many wild Pokémon as possible, while avoiding enemy Pokémon. If you hit an enemy Pokémon, the game will end.
 
 ## Features
-- **Responsive Gameplay**: The game adjusts its canvas size according to the window size, providing an optimal gaming experience.
 - **Animated Characters**: Ash and the Pokémon are animated, with smooth transitions between different states (walking, throwing Pokéballs).
-- **Background Parallax**: The background scrolls continuously, giving the impression of forward movement as Ash runs.
 - **Score System**: Track the number of Pokémon you’ve caught in real-time.
 - **Game Over State**: If Ash collides with an enemy Pokémon, the game ends, displaying your total score.
 
